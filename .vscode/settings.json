@@ -16,6 +16,7 @@
     "cSpell.language": "en,es",
     "cSpell.words": [
         "chartboost",
+        "django",
         "exitfirst",
         "pytest",
         "snok",

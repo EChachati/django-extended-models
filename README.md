@@ -17,32 +17,65 @@ poetry add django-extended-models
 
 ### `utils.py`
 
-#### `__set_default_values`
-
-The function sets default values for fields in a model if they are not provided.
-
-```python
-from django_extended_models.utils import __set_default_values
-
-# Example usage:
-model = ...
-fields = ...
-
-dictionary, fields = __set_default_values(model, fields)
-```
-
 #### `model_to_dict`
 
 Converts a Django model object into a dictionary, recursively including related model objects up to a specified depth.
 
+##### Parameters
+
+- object (required): The instance of the Django model that you want to convert to a dictionary.
+- fields (optional): Specifies which fields of the model object should be included in the resulting dictionary. It can be either a list of field names, a dictionary where the keys are field names and the values are additional options for each field, or the string '__all__' to include all fields.
+- current_recursion_depth (optional): The current recursion depth, tracking how many levels deep the function has traversed through nested models.
+- max_recursion_depth (optional): The maximum depth of recursion allowed when converting a model object to a dictionary.
+
+##### Examples
+
+Basic Usage
+
 ```python
 from django_extended_models.utils import model_to_dict
+from django.db import models
 
-# Example usage:
-object = ...
-fields = ...
+# Example usage with a Django model instance
+my_model_instance = MyModel.objects.get(pk=1)
+resulting_dict = model_to_dict(my_model_instance)
+print(resulting_dict)
+```
 
-dictionary = model_to_dict(object, fields=fields)
+Specify Fields
+
+```python
+from django_extended_models.utils import model_to_dict
+from django.db import models
+
+# Example usage with specific fields
+my_model_instance = MyModel.objects.get(pk=1)
+resulting_dict = model_to_dict(my_model_instance, fields=['field1', 'field2'])
+print(resulting_dict)
+```
+
+Include All Fields
+
+```python
+from django_extended_models.utils import model_to_dict
+from django.db import models
+
+# Example usage to include all fields
+my_model_instance = MyModel.objects.get(pk=1)
+resulting_dict = model_to_dict(my_model_instance, fields='__all__')
+print(resulting_dict)
+```
+
+Recursion Depth
+
+```python
+from django_extended_models.utils import model_to_dict
+from django.db import models
+
+# Example usage with recursion depth limit
+my_model_instance = MyModel.objects.get(pk=1)
+resulting_dict = model_to_dict(my_model_instance, max_recursion_depth=2)
+print(resulting_dict)
 ```
 
 ### `mixins.py`
@@ -75,6 +108,10 @@ from django_extended_models.models import BaseModel
 class MyModel(BaseModel):
     pass
 ```
+
+## Contributing
+
+Feel free to contribute to this project by forking the repository and submitting pull requests. If you encounter any issues or have suggestions, please open an issue on the GitHub repository.
 
 ## License
 
